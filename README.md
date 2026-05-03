@@ -1,59 +1,86 @@
-# PpwAngular21
+# Práctica 1: Instalación y Configuración del Entorno
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+**Autor:** John Tigre
 
-## Development server
+## 1. Descripción de la Práctica
 
-To start a local development server, run:
+En esta práctica se configuró el entorno de desarrollo y se inicializó el proyecto base `ppw-angular-21` utilizando Angular CLI 21. Se estableció el uso de `pnpm` como gestor de paquetes, SCSS para los estilos globales y se prescindió del Server-Side Rendering (SSR) para mantener el enfoque en una Single Page Application (SPA). Además, se implementó la arquitectura moderna de *Standalone Components* (sin `NgModule`) y se definió una estructura de directorios escalable basada en *features* (`src/app/features/`), preparando el proyecto para un desarrollo incremental y mantenible a lo largo de los siguientes módulos.
 
-```bash
-ng serve
+---
+
+## 2. Código Destacado
+
+### 2.1 Enrutamiento y Rutas Comodín (`app.routes.ts`)
+Se configuró el enrutador principal de la aplicación definiendo la ruta raíz e implementando una ruta *wildcard* (`**`) para atrapar cualquier URL inexistente y redirigirla a la página principal, evitando pantallas en blanco.
+
+```typescript
+import { Routes } from '@angular/router';
+import { HomePage } from './features/home/pages/home-page';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: HomePage,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
+];
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 2.2 Arquitectura basada en Features (`home-page.ts`)
+Se creó el primer componente de la aplicación aislado en su propio módulo lógico (`features/home/pages/`). Este componente utiliza el enfoque *Standalone*, siendo independiente y autocontenido.
 
-## Code scaffolding
+```typescript
+import { Component } from '@angular/core';
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+@Component({
+  selector: 'app-home-page',
+  template: `
+    <section>
+      <h1>PPW Angular 21</h1>
+      <p>Proyecto incremental listo para crecer.</p>
+    </section>
+  `,
+})
+export class HomePage {}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 2.3 Simplificación del Componente Raíz (`app.ts` y `app.html`)
+Se limpió el código generado por defecto por Angular CLI, reduciendo el componente principal a su mínima expresión. Se delegó toda la responsabilidad de renderizado al `RouterOutlet` dentro de un contenedor semántico principal.
 
-```bash
-ng generate --help
+```html
+<!-- src/app/app.html -->
+<main class="app-shell">
+  <router-outlet />
+</main>
 ```
 
-## Building
+---
 
-To build the project run:
+## 3. Resultados y Evidencias
 
-```bash
-ng build
-```
+### 1. Versiones del entorno
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+![Versión de herramientas](src/assets/01-ng-version.png)
 
-## Running unit tests
+**Descripción:** Verificación en la terminal de las herramientas instaladas globalmente, confirmando el uso de Node.js, el gestor de paquetes `pnpm` y Angular CLI en su versión 21.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 2. Creación del proyecto
 
-```bash
-ng test
-```
+![Creación del proyecto](src/assets/01-ng-new.png)
 
-## Running end-to-end tests
+**Descripción:** Proceso de inicialización del proyecto ejecutando `ng new` con las flags de configuración inicial (routing, estilos SCSS, sin SSR), evidenciando la generación exitosa de la estructura de archivos.
 
-For end-to-end (e2e) testing, run:
+### 3. Pantalla de inicio original
 
-```bash
-ng e2e
-```
+![Pantalla de inicio de Angular](src/assets/01-app-inicio.png)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+**Descripción:** Despliegue inicial de la aplicación levantada en el puerto `localhost:4200`, mostrando el *boilerplate* por defecto que provee Angular tras la instalación.
 
-## Additional Resources
+### 4. Home Page modificado y enrutado
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+![Home Page modificado](src/assets/01-home-page.png)
+
+**Descripción:** Resultado final tras implementar la estructura de *features*, conectar el enrutador y aplicar los estilos globales básicos. Se muestra el componente `HomePage` renderizado correctamente en la ruta raíz.
